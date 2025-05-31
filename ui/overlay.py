@@ -116,6 +116,9 @@ def show_overlay(callback):
     slide_in()
     root.mainloop()
 
+    if not user_input.strip:
+        user_input = None
+
     return user_input
 
 if __name__ == "__main__":
