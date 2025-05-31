@@ -66,14 +66,15 @@ def show_overlay(callback):
     entry = tk.Entry(
         root,
         font=font_e,
-        bg="#333",
+        bg="#222",
         fg="white",
         insertbackground="white",
         borderwidth=0,
         relief="flat",
         highlightthickness=0
     )
-    entry.place(x=entry_x, y=entry_y, width=entry_width, height=entry_height)
+    entry_pad = 5
+    entry.place(x=entry_x + entry_pad, y=entry_y, width=entry_width - entry_pad, height=entry_height)
     entry.focus()
 
     # escape key to close
@@ -97,7 +98,7 @@ def show_overlay(callback):
             x = start_x + dx * i
             root.geometry(f"{window_width}x{window_height}+{x}+{pos_y}")
             root.update()
-            root.after(10)
+            root.after(1)
         root.geometry(f"{window_width}x{window_height}+{end_x}+{pos_y}")
 
     def slide_out():
@@ -109,7 +110,7 @@ def show_overlay(callback):
             x = start_x + dx * i
             root.geometry(f"{window_width}x{window_height}+{x}+{pos_y}")
             root.update()
-            root.after(10)
+            root.after(1)
         root.destroy()
 
     slide_in()
@@ -117,8 +118,11 @@ def show_overlay(callback):
 
     return user_input
 
+if __name__ == "__main__":
+    show_overlay(callback=lambda user_input: print(f"callback: {user_input}"))
+
 # test callback 
-show_overlay(callback=lambda user_input: print(f"callback: {user_input}"))
+# show_overlay(callback=lambda user_input: print(f"callback: {user_input}"))
 
 
 #random rect
