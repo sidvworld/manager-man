@@ -1,0 +1,24 @@
+TaskManagerApp/
+│
+├── main.py                  # Entry point, launches UI and background
+├── hotkey_listener.py       # Runs in background, listens for CTRL + Q
+├── overlay_prompt.py        # Displays the input UI
+├── nlp_parser.py            # Parses text into (task name, deadline, importance)
+├── database/
+│   ├── __init__.py
+│   ├── db.py                # Handles connection and queries (using SQLite or PostgreSQL)
+│   └── schema.sql           # SQL schema definitions
+├── ui/
+│   ├── __init__.py
+│   └── prompt_window.py     # UI code for the overlay
+├── utils/
+│   ├── __init__.py
+│   └── datetime_utils.py    # Natural date parsing, etc.
+├── startup/
+│   ├── __init__.py
+│   └── autostart.py         # Code to make the app run at system startup
+├── tasks/
+│   ├── __init__.py
+│   └── task_model.py        # Defines Task class structure
+├── requirements.txt         # Python dependencies
+└── README.md
