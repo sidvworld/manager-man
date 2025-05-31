@@ -1,55 +1,124 @@
 import tkinter as tk
 
-def show_overlay():
+def show_overlay(callback):
     root = tk.Tk()
     root.overrideredirect(True)
     root.attributes('-topmost', True)
-    #tkinter workaround for corners - check https://stackoverflow.com/questions/7068858/tkinter-window-with-transparent-background
-    #basically magenta is the transparent color
-    root.wm_attributes('-transparentcolor', 'magenta') 
+    root.wm_attributes('-transparentcolor', 'magenta')
 
-    # change these later if its too fucking big
-    window_width = 400
-    window_height = 100
+    #sizing boi
+    entry_width = 320
+    entry_height = 36
+
+    border_thickness = 6
+    border_radius = 22
+
+    window_width = entry_width + border_thickness * 2 + 16
+    window_height = entry_height + border_thickness * 2 + 16
+
     screen_width = root.winfo_screenwidth()
-    x = screen_width - window_width - 20
+    pos_x = screen_width - window_width - 20
+    pos_y = 200 #adjust just to move it down
 
-    #hide and starts offscreen - comment this line and use other one if you want to see the window immediately
-    # root.geometry(f"{window_width}x{window_height}+{screen_width}+20")
+    root.geometry(f"{window_width}x{window_height}+{pos_x}+{pos_y}")
 
-    #other one
-    root.geometry(f"{window_width}x{window_height}+{x}+120")
-
-    canvas = tk.Canvas(root,
-                       width=window_width,
-                       height=window_height,
-                       bg='magenta',
-                       highlightthickness=0)
+    canvas = tk.Canvas(
+        root,
+        width=window_width,
+        height=window_height,
+        bg='magenta',
+        highlightthickness=0
+    )
     canvas.pack()
 
-    # ye literally copy and pasted from stackoverflow man idk
-    radius = 20
+    def create_rounded_rect(canvas, x1, y1, x2, y2, r=16, **kwargs):
+        points = [
+            x1+r, y1,
+            x2-r, y1,
+            x2, y1,
+            x2, y1+r,
+            x2, y2-r,
+            x2, y2,
+            x2-r, y2,
+            x1+r, y2,
+            x1, y2,
+            x1, y2-r,
+            x1, y1+r,
+            x1, y1
+        ]
+        return canvas.create_polygon(points, smooth=True, **kwargs)
 
-    canvas.create_rectangle(radius, 0, window_width - radius, window_height, fill="#222", outline="")
-    canvas.create_rectangle(0, radius, window_width, window_height - radius, fill="#222", outline="")
 
-    # top right corner
-    canvas.create_arc((window_width - radius * 2, 0, window_width, radius * 2), start=0, extent=90, fill="#222", outline="")
+    create_rounded_rect(
+        canvas,
+        border_thickness, border_thickness,
+        window_width - border_thickness, window_height - border_thickness,
+        r=border_radius,
+        fill="#222",
+        outline="#444",
+        width=border_thickness
+    )
 
-    # bottom left corner
-    canvas.create_arc((0, window_height - radius * 2, radius * 2, window_height), start=180, extent=90, fill="#222", outline="")
+    entry_x = (window_width - entry_width) // 2
+    entry_y = (window_height - entry_height) // 2
+    font_e = ("Ubuntu", 14)
 
-    # bottom right corner
-    canvas.create_arc((window_width - radius * 2, window_height - radius * 2, window_width, window_height), start=270, extent=90, fill="#222", outline="")
+    entry = tk.Entry(
+        root,
+        font=font_e,
+        bg="#333",
+        fg="white",
+        insertbackground="white",
+        borderwidth=0,
+        relief="flat",
+        highlightthickness=0
+    )
+    entry.place(x=entry_x, y=entry_y, width=entry_width, height=entry_height)
+    entry.focus()
 
-    # top left corner
-    canvas.create_arc((0, 0, radius * 2, radius * 2), start=90, extent=90, fill="#222", outline="")
+    # escape key to close
+    root.bind("<Escape>", lambda e: slide_out())
 
+    user_input = ""
+    def submit(event=None):
+        user_input = entry.get()
+        callback(user_input)
+        slide_out()
 
+    entry.bind("<Return>", submit)
+
+    #slide in slide out animation off stack overflow too lol
+    def slide_in():
+        start_x = screen_width
+        end_x = pos_x
+        steps = 20
+        dx = (end_x - start_x) // steps
+        for i in range(steps + 1):
+            x = start_x + dx * i
+            root.geometry(f"{window_width}x{window_height}+{x}+{pos_y}")
+            root.update()
+            root.after(10)
+        root.geometry(f"{window_width}x{window_height}+{end_x}+{pos_y}")
+
+    def slide_out():
+        start_x = pos_x
+        end_x = screen_width
+        steps = 20
+        dx = (end_x - start_x) // steps
+        for i in range(steps + 1):
+            x = start_x + dx * i
+            root.geometry(f"{window_width}x{window_height}+{x}+{pos_y}")
+            root.update()
+            root.after(10)
+        root.destroy()
+
+    slide_in()
     root.mainloop()
 
+    return user_input
 
-show_overlay()
+# test callback 
+show_overlay(callback=lambda user_input: print(f"callback: {user_input}"))
 
 
 #random rect
