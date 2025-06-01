@@ -18,5 +18,5 @@ def start_hotkey_listener():
 
 start_hotkey_listener()
 while True:
-    time.sleep(5)
+    time.sleep(1)
 

@@ -1,6 +1,12 @@
 import tkinter as tk
 
+overlay_open = False
+
 def show_overlay(callback):
+    global overlay_open
+    if overlay_open:
+        return
+    overlay_open = True
     root = tk.Tk()
     root.overrideredirect(True)
     root.attributes('-topmost', True)
@@ -102,6 +108,7 @@ def show_overlay(callback):
         root.geometry(f"{window_width}x{window_height}+{end_x}+{pos_y}")
 
     def slide_out():
+        global overlay_open
         start_x = pos_x
         end_x = screen_width
         steps = 20
@@ -112,6 +119,7 @@ def show_overlay(callback):
             root.update()
             root.after(1)
         root.destroy()
+        overlay_open = False
 
     slide_in()
     root.mainloop()
