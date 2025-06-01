@@ -146,7 +146,7 @@ def parse_text(text):
     for ent in doc.ents:
         if ent.label_ in ("DATE", "TIME"):
             task_deadline = ent.text
-            pattern = r"\b(?:by|on|at|in)\s+" + re.escape(ent.text)
+            pattern = r"\b(?:by|on|at|in|next|the following)\s+" + re.escape(ent.text)
             task_name = re.sub(pattern, "", task_name, flags=re.IGNORECASE)
             task_name = task_name.replace(ent.text, "").strip()
 
@@ -163,9 +163,9 @@ def parse_text(text):
 
 
 #example usage
-text = "submit the final project by tuesday"
-parsed_task = parse_text(text)
-print(f"task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
+#text = "submit the final project by tuesday"
+#parsed_task = parse_text(text)
+#print(f"task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
 
 # example usage 2
 # inputs = [
