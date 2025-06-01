@@ -1,18 +1,6 @@
-import requests
+go to this link for all routes:
 
+http://10.0.1.159:8000/docs
 
-URL = "http://10.0.1.159:8000"
-SECRET = "mysecret123"
-
-# view all rows
-res = requests.get(f"{URL}/admin/get_tasks/", params={"secret": SECRET, "table": "tasks_table"})
-print(res.json())
-
-# insert sample data
-# requests.post(f"{URL}/admin/insert_sample_data/", params={"secret": SECRET})
-
-# delete all data
-requests.post(f"{URL}/admin/delete_all/", params={"secret": SECRET, "table": "tasks_table"})
-
-# reset auto-increment ID
-requests.post(f"{URL}/admin/reset_sequence/", params={"secret": SECRET, "table": "tasks_table"})
+current tables:
+tasks_table

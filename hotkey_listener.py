@@ -1,6 +1,6 @@
 from ui.overlay import show_overlay
 from nlp_parser import parse_text
-from server_db.db_tasks import save_task
+from server_db.db_tasks import save_task_table
 import keyboard
 import time
 import threading
@@ -8,8 +8,7 @@ import threading
 def handle_input(user_input):
     if user_input and user_input.strip():
         task_obj = parse_text(user_input)
-        save_task(task_obj)
-        print(f"task saved: {task_obj.task_name}, {task_obj.task_deadline}, {task_obj.task_priority}, {task_obj.created_at}")
+        save_task_table(task_obj)
     else:
         print("user input is empty")
 
