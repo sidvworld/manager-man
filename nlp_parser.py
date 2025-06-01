@@ -4,8 +4,9 @@
 # use tokenization and text classification to parse text
 
 import spacy
-import task.task_class
+from task.task_class import task
 import dateparser
+import re
 from datetime import datetime, timedelta
 
 # spacy test
@@ -97,32 +98,82 @@ def infer_priority(task_name):
     else:
         return None
 
+def get_next_weekday(target_day_name: str, base_date=None):
+    if base_date is None:
+        base_date = datetime.now()
+    
+    target_day_name = target_day_name.strip().lower()
+    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+    if target_day_name not in weekdays:
+        return None
+
+    today_idx = base_date.weekday()
+    target_idx = weekdays.index(target_day_name)
+
+    delta_days = (target_idx - today_idx + 7) % 7
+    delta_days = delta_days or 7
+
+    result_date = base_date + timedelta(days=delta_days)
+    return result_date.strftime("%m/%d/%Y")
+
+def parse_date(date_str):
+    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    date_str_clean = date_str.strip().lower()
+
+    if date_str_clean in weekdays:
+        return get_next_weekday(date_str_clean)
+
+    parsed = dateparser.parse(
+        date_str,
+        settings={
+            'PREFER_DATES_FROM': 'future',
+            'RELATIVE_BASE': datetime.now()
+        }
+    )
+
+    if parsed:
+        return parsed.strftime("%m/%d/%Y")
+    return None
+
 
 def parse_text(text):
     doc = nlp(text)
 
     task_name = text
     task_deadline = None
-    task_priority = ""
 
     for ent in doc.ents:
         if ent.label_ in ("DATE", "TIME"):
             task_deadline = ent.text
-            task_name = text.replace(ent.text, "").strip()
+            pattern = r"\b(?:by|on|at|in)\s+" + re.escape(ent.text)
+            task_name = re.sub(pattern, "", task_name, flags=re.IGNORECASE)
+            task_name = task_name.replace(ent.text, "").strip()
 
-        if task_deadline:
-            if "tomorrow" in task_deadline.lower():
-                deadline_date = (datetime.now() + timedelta(days=1)).strftime("%m/%d/%Y")
+    if task_deadline:
+        deadline_date = parse_date(task_deadline)
+    else:
+        deadline_date = None
 
-            elif "today" in task_deadline.lower():
-                deadline_date = datetime.now().strftime("%m/%d/%Y")
+    task_priority = infer_priority(task_name)
 
-            elif "monday" in task_deadline.lower() or "tuesday" in task_deadline.lower() or "wednesday" in task_deadline.lower() or "thursday" in task_deadline.lower() or "friday" in task_deadline.lower() or "saturday" in task_deadline.lower() or "sunday" in task_deadline.lower():
-                deadline_date = dateparser.parse(task_deadline, settings={'PREFER_DATES_FROM': 'future'}).strftime("%m/%d/%Y")
-            else:
-                deadline_date = task_deadline
-        else:
-            deadline_date = None
+    return task(task_name.strip(), deadline_date, task_priority)
+    
 
-        
-    task_name = task_name.replace("by", "").strip()
+
+
+#example usage
+# text = "submit the final project by tuesday"
+# parsed_task = parse_text(text)
+# print(f"task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
+
+# example usage 2
+inputs = [
+    "email the teacher about the exam",
+    "submit the application by june 6th",
+    "turn in the assignment by next week",
+]
+
+for i, input_text in enumerate(inputs):
+    parsed_task = parse_text(input_text)
+    print(f"{i+1} task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
