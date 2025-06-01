@@ -11,7 +11,7 @@ def on_quit(icon, item):
     sys.exit()
 
 def setup_tray():
-    image = Image.open("assets/icon.png")
+    image = Image.open("ui/assets/taskforce-downsized.png")
     menu = Menu(
         # MenuItem("Add Task", on_add_task),
         MenuItem("Quit", on_quit)
@@ -20,4 +20,5 @@ def setup_tray():
     icon.run()
 
 if __name__ == "__main__":
+    threading.Thread(target=start_hotkey_listener, daemon=True).start()
     setup_tray()
