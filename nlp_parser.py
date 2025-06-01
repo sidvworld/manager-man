@@ -163,17 +163,17 @@ def parse_text(text):
 
 
 #example usage
-# text = "submit the final project by tuesday"
-# parsed_task = parse_text(text)
-# print(f"task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
+text = "submit the final project by tuesday"
+parsed_task = parse_text(text)
+print(f"task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
 
 # example usage 2
-inputs = [
-    "email the teacher about the exam",
-    "submit the application by june 6th",
-    "turn in the assignment by next week",
-]
+# inputs = [
+#     "email the teacher about the exam",
+#     "submit the application by june 6th",
+#     "turn in the assignment by next week",
+# ]
 
-for i, input_text in enumerate(inputs):
-    parsed_task = parse_text(input_text)
-    print(f"{i+1} task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
+# for i, input_text in enumerate(inputs):
+#     parsed_task = parse_text(input_text)
+#     print(f"{i+1} task details -> task name: {parsed_task.task_name}, deadline: {parsed_task.task_deadline}, priority: {parsed_task.task_priority}, created at: {parsed_task.created_at}")
