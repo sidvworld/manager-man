@@ -39,9 +39,21 @@ def see_table(table):
         print(row)
     con.close()
 
-#insert_sample_data()
+def reset_sequence(table):
+    get_user_input = input("reset sequence (y/n): ")
+    if get_user_input.lower() == 'y':
+        con = sqlite3.connect('database/tasks.db')
+        cur = con.cursor()
+        cur.execute(f"UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='{table}'")
+        con.commit()
+        con.close()
+        print(f"id for {table} reset")
+    else:
+        pass
+
+# insert_sample_data()
 see_table("tasks_table")
 delete_current_data("tasks_table")
-#delete_sample_data()
+reset_sequence("tasks_table")
 
-
+#delete_sample_data()y
