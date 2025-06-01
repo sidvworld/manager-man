@@ -4,6 +4,7 @@
 # use tokenization and text classification to parse text
 
 import spacy
+import en_core_web_sm
 from task.task_class import task
 import dateparser
 import re
@@ -85,7 +86,7 @@ LOW_PRIORITY = [
     "calendar"
 ]
 
-nlp  = spacy.load("en_core_web_sm")
+nlp = en_core_web_sm.load()
 
 def infer_priority(task_name):
     task_name_words = task_name.lower().split()
