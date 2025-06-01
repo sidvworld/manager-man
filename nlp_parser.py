@@ -86,6 +86,18 @@ LOW_PRIORITY = [
 
 nlp  = spacy.load("en_core_web_sm")
 
+def infer_priority(task_name):
+    task_name_words = task_name.lower().split()
+    if any(word in HIGH_PRIORITY for word in task_name_words):
+        return "high"
+    elif any(word in MEDIUM_PRIORITY for word in task_name_words):
+        return "medium"
+    elif any(word in LOW_PRIORITY for word in task_name_words):
+        return "low"
+    else:
+        return None
+
+
 def parse_text(text):
     doc = nlp(text)
 
