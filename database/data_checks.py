@@ -18,6 +18,18 @@ def delete_sample_data():
     con.commit()
     con.close()
 
+def delete_current_data(table):
+    getuser_input = input("delete all data (y/n): ")
+    if getuser_input.lower() == 'y':
+        con = sqlite3.connect('database/tasks.db')
+        cur = con.cursor()
+        cur.execute(f"DELETE FROM {table}")
+        con.commit()
+        con.close()
+        print("all data deleted")
+    else:
+        pass
+
 def see_table(table):
     con = sqlite3.connect('database/tasks.db')
     cur = con.cursor()
@@ -29,4 +41,5 @@ def see_table(table):
 
 #insert_sample_data()
 see_table("tasks_table")
+delete_current_data("tasks_table")
 #delete_sample_data()
