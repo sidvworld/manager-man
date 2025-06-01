@@ -1,3 +1,4 @@
+import pystray
 from pystray import Icon, Menu, MenuItem
 from PIL import Image
 import threading
@@ -11,9 +12,11 @@ def on_quit(icon, item):
     sys.exit()
 
 def setup_tray():
-    image = Image.open("ui/assets/taskforce-downsized.png")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    icon_path = os.path.join(script_dir, "taskforce_downsized.png")
+    image = Image.open(icon_path)
+
     menu = Menu(
-        # MenuItem("Add Task", on_add_task),
         MenuItem("Quit", on_quit)
     )
     icon = Icon("TaskManager", image, "Task Manager", menu)
