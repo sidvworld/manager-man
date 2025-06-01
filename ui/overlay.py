@@ -98,7 +98,7 @@ def show_overlay(callback):
     def slide_in():
         start_x = screen_width
         end_x = pos_x
-        steps = 20
+        steps = 15
         dx = (end_x - start_x) // steps
         for i in range(steps + 1):
             x = start_x + dx * i
@@ -111,7 +111,7 @@ def show_overlay(callback):
         global overlay_open
         start_x = pos_x
         end_x = screen_width
-        steps = 20
+        steps = 15
         dx = (end_x - start_x) // steps
         for i in range(steps + 1):
             x = start_x + dx * i

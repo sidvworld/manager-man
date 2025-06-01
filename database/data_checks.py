@@ -56,4 +56,4 @@ see_table("tasks_table")
 delete_current_data("tasks_table")
 reset_sequence("tasks_table")
 
-#delete_sample_data()y
+#delete_sample_data()

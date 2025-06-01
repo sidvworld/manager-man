@@ -1,9 +1,8 @@
-import pystray
 from pystray import Icon, Menu, MenuItem
 from PIL import Image
 import threading
-import sys
 import os
+import sys
 
 from hotkey_listener import start_hotkey_listener
 
@@ -12,16 +11,21 @@ def on_quit(icon, item):
     sys.exit()
 
 def setup_tray():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    icon_path = os.path.join(script_dir, "taskforce_downsized.png")
-    image = Image.open(icon_path)
+    icon_path = "taskforce_downsized.png"
+    if not os.path.exists(icon_path):
+        print("icon not found:", icon_path)
+        return
 
-    menu = Menu(
-        MenuItem("Quit", on_quit)
-    )
-    icon = Icon("TaskManager", image, "Task Manager", menu)
-    icon.run()
+    image = Image.open(icon_path)
+    menu = Menu(MenuItem("Quit", on_quit))
+    return Icon("TaskManager", image, "Task Manager", menu)
 
 if __name__ == "__main__":
-    threading.Thread(target=start_hotkey_listener, daemon=True).start()
-    setup_tray()
+    try:
+        threading.Thread(target=start_hotkey_listener, daemon=True).start()
+    except Exception as e:
+        print(f"hotkey thread error: {e}")
+
+    tray_icon = setup_tray()
+    if tray_icon:
+        tray_icon.run()

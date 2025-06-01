@@ -15,7 +15,8 @@ def handle_input(user_input):
 
 def start_hotkey_listener(): 
     keyboard.add_hotkey('alt+=', lambda: threading.Thread(target=show_overlay, kwargs={'callback': handle_input}).start(), suppress=True)
+    while True:
+        time.sleep(1)
 
-start_hotkey_listener()
-while True:
-    time.sleep(1)
+if __name__ == "__main__":
+    start_hotkey_listener()
