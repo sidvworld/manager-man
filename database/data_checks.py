@@ -43,3 +43,5 @@ def see_table(table):
 see_table("tasks_table")
 delete_current_data("tasks_table")
 #delete_sample_data()
+
+
