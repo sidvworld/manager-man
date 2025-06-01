@@ -18,7 +18,7 @@ def setup_tray():
 
     image = Image.open(icon_path)
     menu = Menu(MenuItem("Quit", on_quit))
-    return Icon("TaskManager", image, "Task Manager", menu)
+    return Icon("TaskForce", image, "TaskForce", menu)
 
 if __name__ == "__main__":
     try:

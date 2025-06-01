@@ -22,3 +22,8 @@ TaskManagerApp/
 │   └── task_model.py        # Defines Task class structure
 ├── requirements.txt         # Python dependencies
 └── README.md
+
+
+temp pyinstaller builder
+
+pyinstaller main.py ^ --onefile ^ --windowed^ --icon=assets/taskforce-logo.ico --name=TaskForce

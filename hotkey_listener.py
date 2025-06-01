@@ -1,11 +1,12 @@
 from ui.overlay import show_overlay
 from nlp_parser import parse_text
-from db_task import save_task
+from db_task import save_task, init_db
 import keyboard
 import time
 import threading
 
 def handle_input(user_input):
+    init_db()
     if user_input and user_input.strip():
         task_obj = parse_text(user_input)
         save_task(task_obj)
