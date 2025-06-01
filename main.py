@@ -11,7 +11,7 @@ def on_quit(icon, item):
     sys.exit()
 
 def setup_tray():
-    icon_path = "ui/assets/taskforce_downsized.png"
+    icon_path = "assets/taskforce-logo.ico"
     if not os.path.exists(icon_path):
         print("icon not found:", icon_path)
         return
