@@ -1,9 +1,9 @@
 import sqlite3
 import os
 
-def init_db():
-    os.makedirs('database', exist_ok=True)
-    con = sqlite3.connect('database/tasks.db')
+def local_init_db():
+    os.makedirs('local_db', exist_ok=True)
+    con = sqlite3.connect('local_db/tasks.db')
     cur = con.cursor()
 
     cur.execute("""
@@ -19,7 +19,7 @@ def init_db():
     con.commit()
     con.close()
 
-def save_task(task_obj):
+def local_save_task(task_obj):
     con = sqlite3.connect('database/tasks.db')
     cur = con.cursor()
 
@@ -31,4 +31,4 @@ def save_task(task_obj):
     con.commit()
     con.close()
     
-init_db()
+local_init_db()
