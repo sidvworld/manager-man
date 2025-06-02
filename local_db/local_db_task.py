@@ -20,7 +20,7 @@ def local_init_db():
     con.close()
 
 def local_save_task(task_obj):
-    con = sqlite3.connect('database/tasks.db')
+    con = sqlite3.connect('local_db/tasks.db')
     cur = con.cursor()
 
     cur.execute("""

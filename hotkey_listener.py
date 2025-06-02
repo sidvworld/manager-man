@@ -12,8 +12,8 @@ def handle_input(user_input):
     else:
         print("user input is empty")
 
-def start_hotkey_listener(overlay_queue): 
-    keyboard.add_hotkey('alt+=', lambda: overlay_queue.put(True), suppress=True)
+def start_hotkey_listener(): 
+    keyboard.add_hotkey('alt+=', lambda: threading.Thread(target=show_overlay, kwargs={'callback': handle_input}).start(), suppress=True)
     while True:
         time.sleep(1)
 
